@@ -1,0 +1,251 @@
+﻿
+
+    @font-face {
+        font-family: "brobius";
+        src: url('https://fonts.googleapis.com/css?family=Maven+Pro:500,600,700,900&display=swap')
+    }
+
+    * {
+      
+        font-family: 'Maven Pro', sans-serif;
+        font-family: 'Maven Pro', sans-serif;
+        /*color: midnightblue;*/
+        box-sizing: border-box;
+    }
+
+    div.navbar-bran {
+        font-family: 'Ultra', serif;
+    }
+
+    div.navbar-header {
+        box-shadow: 0px 0px 3px black;
+    }
+
+    .btn {
+        font-weight: 900;
+        width: 90px;
+    }
+
+    .adm {
+        width: 110px;
+    }
+
+    #Dinner, #Breakfast, #Exercise, #Snacks, #Lunch {
+        font-weight: 900;
+        width: 100px;
+    }
+
+    /*a,*/ a:hover {
+        color: white;
+        text-decoration: none;
+    }
+
+    #myPlan {
+        font-weight: 900;
+        width: 400px;
+    }
+
+    #sleep {
+        font-weight: 900;
+        width: 70px;
+    }
+
+    body {
+        background-image: url('../../images/ok.jpg');
+        /*background-size:950px;*/
+    }
+
+div#Box {
+    /*box-shadow:0px 0px 20px white;*/
+    background-color: rgba(248, 248, 248, 0.8);
+    border-radius: 10px;
+    text-align: center;
+    justify-content: center;
+    max-width: 800px;
+    min-width: 360px;
+    /*min-width: 600px;*/
+}
+
+        div#Box > * {
+            font-weight: 800;
+            font-size: 18px;
+        }
+
+    div#straight {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-content: baseline;
+    }
+
+    span#goal {
+        color: white;
+    }
+
+        span#goal > * {
+            font-family: 'Ultra', serif;
+            font-size: 20px;
+            font-style: italic;
+            letter-spacing: 1px;
+            /*-webkit-text-stroke:white 2px;*/
+        }
+
+    h2#myPlan1 {
+        /*font-family: 'Ultra', serif;*/
+        font-size: 50px;
+        font-weight: 100;
+        font-style: italic;
+        color: black;
+        letter-spacing: 3px;
+        margin-top: 2px;
+    }
+
+    div#straight > * {
+        border-radius: 10px;
+        padding: 10px;
+        padding-bottom: 0px;
+        color: black;
+    }
+
+    hr#hr {
+        border: solid rgba(0, 0, 0, 0.66);
+        margin-top: 5px;
+        margin-bottom: 2px;
+        width: 30%;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    td {
+        text-align: center;
+    }
+
+    .quantityBreakfast {
+        max-width: 80px;
+    }
+
+    .quantityLunchLunch {
+        max-width: 80px;
+    }
+
+    #numberPages {
+        /*max-width: 80px;*/
+    }
+
+    #goToPage {
+        /*max-width: 80px;*/
+    }
+
+    .quantityDinnerDinner {
+        max-width: 80px;
+    }
+
+    .quantitySnacksSnacks {
+        max-width: 80px;
+    }
+
+    .quantityBurn {
+        max-width: 80px;
+    }
+
+    .form-inline {
+        text-align: center;
+    }
+
+    /*.form-inline.admin {
+    text-align: left;
+}*/
+
+    #sumCalories, #leftFromGoal {
+        margin-bottom: 2px;
+    }
+
+    a.Reg, a.Reg:hover {
+        text-decoration: none;
+        color: black;
+    }
+
+    #ChangeLabel > label {
+        font-weight: 700;
+    }
+
+    #FirstName, #LastName, #Email, #Password, #ConfirmPassword {
+        width: 270px;
+    }
+
+    #likeNavbar {
+        height: 50px;
+        background-color: black;
+        display: flex;
+        text-align: center;
+        background-color: #222;
+        border-color: #080808;
+        color: #9d9d9d;
+    }
+
+        #likeNavbar > button, #likeNavbar button, .dropdown-menu, #likeNavbar a {
+            height: 50px;
+            background-color: #222;
+            border-color: #080808;
+            color: #9d9d9d;
+            border: none;
+        }
+
+            #likeNavbar > button > a {
+                color: #9d9d9d;
+            }
+
+                #likeNavbar > button > a:hover, #likeNavbar a:hover {
+                    color: white;
+                }
+
+    #logOf {
+        margin-left: 12vw;
+    }
+
+    #BreakfastLay {
+        margin-left: 5vw;
+    }
+
+    th {
+        max-width: 80px;
+    }
+
+    .deleteBtn, .updateBtn, td {
+        word-wrap: break-word;
+        max-width: 80px;
+        min-width: 80px;
+        /*margin-left: 0px;
+        padding-left: 0px;
+        margin-right: 0px;
+        padding-right: 0px;*/
+    }
+        #myPlan.updateBtn {
+            min-width:150px;
+            max-width:180px;
+        }
+
+a:hover {
+    color: #333333;
+}
+
+
+        #xs > td {
+            max-width: 60px;
+        }
+    tr td {
+        /*padding: 0 !important;
+    margin: 0 !important;*/
+    }
+
+    button >a {
+        color:white;
+    }
+button > a:hover {
+    color: white;
+}
+.quantityBreakfast, .quantityBreakfastS, .quantityLunch, .quantityLunchS, .quantityDinner, .quantityDinnerS, .quantitySnacks, .quantitySnacksS {
+    width:90px;
+}

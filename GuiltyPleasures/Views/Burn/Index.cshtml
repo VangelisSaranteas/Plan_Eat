@@ -1,0 +1,318 @@
+﻿@model IEnumerable<GuiltyPleasures.Models.Burn>
+
+@{
+    ViewBag.Title = "List of Exercise";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="font-size:20px;">@ViewBag.Title</h2>
+<br />
+<div >
+        <div  style="display:flex; flex-wrap:nowrap; justify-content:center;">
+            <div>
+                <input type="text" class="form-control" id="search" />
+            </div>
+            <div class="btn-group" style="display:flex; flex-wrap:nowrap;">
+                
+                <button class="btn btn-default" id="searchBtn" style="width:80px; min-width:80px;">Search</button>
+                <button class="btn btn-default" id="resetBtn" style="width:80px; min-width:80px;">Reset</button>
+            </div>
+    </div>
+</div>
+
+<br />
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFood" style="width:200px; font-size:16px;">Create new </button>
+<br />
+<br />
+<div class="modal fade" id="createFood" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header"style="background-color:#3b5998ba;">
+                <h2 class="modal-title"style="color:white;" id="exampleModalLabel">Item creation form</h2>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                        <label for="name" class="col-form-label">Name</label>
+                        <input type="text" class="form-control" id="name" />
+                    </div>
+                    <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                        <label for="calories" class="col-form-label">Calories</label>
+                        <input type="number" class="form-control" id="calories" />
+                    </div>
+                    <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                        <label for="type" class="col-form-label">Time</label>
+                        <input type="number" class="form-control" id="type" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="float:left;font-weight:normal;" class="btn btn-danger btn-lg" data-dismiss="modal">Cancel</button>
+                <button type="button" style=" font-weight:normal;" class="btn btn-success btn-lg " id="createBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editFood" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header"style="background-color:#3b5998ba;">
+                <h2 class="modal-title"style="color:white;" id="exampleModalLabel">Update item</h2>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <form class="form-group">
+                    <input type="hidden" id="fruitId" class="form-control" />
+                    <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                        <label for="name" class="col-form-label" style="text-align:left">Name</label>
+                        <input type="text" class="form-control" id="nameE" />
+                    </div>
+                    <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                        <label for="calories" class="col-form-label">Calories</label>
+                        <input type="number" class="form-control" id="caloriesE" />
+                    </div>
+                    <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                        <label for="type" class="col-form-label">Time</label>
+                        <input type="number" class="form-control" id="typeE" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" style="float:left;font-weight:normal;" class="btn btn-danger btn-lg" data-dismiss="modal">Cancel</button>
+                <button type="button" style=" font-weight:normal;" class="btn btn-success btn-lg " id="createBtn">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr id="titles">
+            <th>
+                Name
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Calories)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Time)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
+
+@section scripts {
+    <script>
+        $(document).ready(function () {
+            function listFood() {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'get',
+                    url: '/api/burnapi',
+                    success: function (data) {
+                        $('tbody').empty();
+                        data.forEach(function (food) {
+                            $('tbody').append('<tr> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Time +
+                                '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.BurnId + '" data-name="' + food.Name + '">Delete</button>' +
+                                '<button style=" margin:5px;"  class="btn btn-success updateBtn" data-id="'
+                                + food.BurnId + '">Update</button></td></tr>')
+                        });
+
+                        $('.deleteBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            var title = e.target.getAttribute('data-name');
+
+                            $.ajax({
+                                type: 'delete',
+                                url: '/api/burnapi/' + id,
+                                success: function () {
+                                    alert('Delete exercise  ' + title);
+                                    listFood();
+                                    console.log('ccc');
+                                },
+                                error: function () {
+                                    //
+                                }
+                            });
+                        });
+
+                        $('.updateBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            $.ajax({
+                                url: '/api/burnapi/' + id,
+                                type: 'get',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $('#fruitId').val(data.BurnId);
+                                    $('#nameE').val(data.Name);
+                                    $('#caloriesE').val(data.Calories);
+                                    $('#typeE').val(data.Time);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+
+                            $('#editFood').modal('show');
+                        });
+
+                        $('#updateBtnE').click(function () {
+                            var m = new Object();
+                            m.BurnId = $('#fruitId').val();
+                            m.Name = $('#nameE').val();
+                            m.Calories = $('#caloriesE').val();
+                            m.Time = $('#typeE').val();
+                            $.ajax({
+                                type: 'patch',
+                                url: '/api/burnapi',
+                                data: m,
+                                success: function () {
+                                    listFood();
+                                    $('#editFood').modal('hide');
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+                        });
+
+
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+            listFood();
+
+            $('#createBtn').click(function (e) {
+                var fruit = new Object();
+                fruit.Name = $('#name').val();
+                fruit.Calories = $('#calories').val();
+                fruit.Time = $('#type').val();
+                $.ajax({
+                    url: '/api/burnapi',
+                    type: 'post',
+                    data: fruit,
+                    success: function () {
+                        console.log(fruit);
+                        $('#name').val('');
+                        $('#calories').val('');
+                        $('#type').val('');
+                        $('#createFood').modal('hide');
+                        listFood();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                          alert('Wrong Input Data');
+                    }
+
+                });
+
+            });
+
+            $('#searchBtn').click(function (e) {
+                function listFoodSearch() {
+                    var searchString = $('#search').val();
+                    console.log(searchString);
+                    var id = 0;
+                    $.ajax({
+                        type: 'get',
+                        url: '/api/burnapi/0/' + searchString,
+                        success: function (data) {
+                            console.log(data);
+                            $('tbody').empty();
+                            data.forEach(function (food) {
+                                $('tbody').append('<tr> <td >' + food.Name + '</td> <td>' + food.Calories +  '</td> <td>' + food.Time +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.BurnId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.BurnId + '">Update</button></td></tr>')
+                            });
+
+                            $('.deleteBtn').click(function (e) {
+                                var id = $(e.target).data('id');
+                                var title = e.target.getAttribute('data-name');
+
+                                $.ajax({
+                                    type: 'delete',
+                                    url: '/api/burnapi/' + id,
+                                    success: function () {
+                                        alert('Delete food  ' + title);
+                                        listFoodSearch();
+                                        console.log('ccc');
+                                    },
+                                    error: function () {
+                                        //
+                                    }
+                                });
+                            });
+
+                            $('.updateBtn').click(function (e) {
+                                var id = $(e.target).data('id');
+                                $.ajax({
+                                    url: '/api/burnapi/' + id,
+                                    type: 'get',
+                                    dataType: 'json',
+                                    success: function (data) {
+                                        $('#fruitId').val(data.BurnId);
+                                        $('#nameE').val(data.Name);
+                                        $('#caloriesE').val(data.Calories);
+                                        $('#typeE').val(data.Time);
+                                    },
+                                    error: function (error) {
+                                        console.log(error);
+                                    }
+                                });
+
+                                $('#editFood').modal('show');
+                            });
+
+                            $('#updateBtnE').click(function () {
+                                var m = new Object();
+                                m.BurnId = $('#fruitId').val();
+                                m.Name = $('#nameE').val();
+                                m.Calories = $('#caloriesE').val();
+                                m.Time= $('#typeE').val();
+                                $.ajax({
+                                    type: 'patch',
+                                    url: '/api/burnapi',
+                                    data: m,
+                                    success: function () {
+                                         $('tbody').empty();
+                                        listFoodSearch();
+                                        $('#editFood').modal('hide');
+                                    },
+                                    error: function (error) {
+                                        console.log(error);
+                                          alert('Wrong Input Data');
+                                    }
+                                });
+                            });
+
+                        },
+                        error: function () {
+
+                        }
+                    });
+                }
+                listFoodSearch();
+           });
+
+            $('#resetBtn').click(function (e) {
+                   $('#search').val('');
+                listFood();
+
+            });
+        });
+
+    </script>
+}

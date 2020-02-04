@@ -1,0 +1,955 @@
+﻿@model IEnumerable<GuiltyPleasures.Models.Fruit>
+
+@{
+    ViewBag.Title = "List of Products";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    
+        <h2 style="font-size:20px;">@ViewBag.Title</h2>
+
+        <br />
+        <div class="visible-sm visible-md visible-lg visible-xl">
+            <div style="display:flex; flex-direction:column ; align-items:center">
+
+                <div id="inputs" class="input-group" style="display:flex; flex-wrap:nowrap">
+
+                    <input type="number" class="form-control" id="numberPages" style="max-width:110px; width:110px;" step="5" min="5" />
+                    <input type="number" class="form-control" id="goToPage" value="1" style=" max-width:200px;" min="1" />
+                    <input type="text" class="form-control" id="search" style="width:158px" />
+                    <select id="filters" class="form-control" style="width:100px">
+                        <option value="">All</option>
+                        <option value="Alcohol">Alcohol</option>
+                        <option value="Meat">Meat</option>
+                        <option value="Milk">Milk</option>
+                        <option value="Pasta">Pasta</option>
+                        <option value="Sweet">Sweet</option>
+                        <option value="Fruit">Fruit</option>
+                    </select>
+
+                </div>
+                <div id="buttons" type="submit" style="display:flex;">
+                    <div class="btn-group" style="min-width:200px; display:flex; flex-wrap:nowrap">
+                        <button class="btn btn-default" style="width:110px" id="paging">Items/Page</button>
+                        <button class="btn btn-default" style="width:40px" id="pagingprevious"><< </button>
+                        <button class="btn btn-default" style="width:123px" id="goToPageBtn">Choose Page</button>
+                        <button class="btn btn-default" style="width:40px" id="pagingnext">>></button>
+                        <input type="button" class="btn btn-default" style="width:80px; min-width:80px;" id="searchBtn" value="Search" />
+                        <input type="button" class="btn btn-default" style="min-width:80px; width:80px;" id="resetBtn" value="Reset" />
+                        <input type="button" class="btn btn-default" style="width:100px; min-width:100px;" id="filterBtn" value="Filter" />
+                    </div>
+
+                </div>
+            </div>
+        </div>
+      
+
+
+
+
+        <br class="hidden-xs"/>
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createFood" style="width:200px; font-size:16px;">Add a new item </button>
+<br />
+<br />        
+<div class="modal fade" id="createFood" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header" style="background-color:#3b5998ba;">
+                        <h2 class="modal-title" style="color:white; display:inline" id="exampleModalLabel">Item creation form</h2>
+
+                        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="name" class="col-form-label">Name</label>
+                                <input type="text" class="form-control" id="name" required/>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="calories" class="col-form-label">Calories</label>
+                                <input type="number" class="form-control" id="calories" required/>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="carbs" class="col-form-label">Carbs</label>
+                                <input type="number" class="form-control" id="carbs" required/>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="fat" class="col-form-label">Fat</label>
+                                <input type="number" class="form-control" id="fat" required/>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="protein" class="col-form-label">Protein</label>
+                                <input type="number" class="form-control" id="protein" required/>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="type" class="col-form-label">Type</label>
+                                <select id="type" class="form-control" required>
+                                    <option value="" selected></option>
+                                    <option value="Alcohol">Alcohol</option>
+                                    <option value="Meat">Meat</option>
+                                    <option value="Milk">Milk</option>
+                                    <option value="Pasta">Pasta</option>
+                                    <option value="Sweet">Sweet</option>
+                                    <option value="Fruit">Fruit</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="portion" class="col-form-label">Serving Portion</label>
+                                <input type="text" class="form-control" id="portion" required/>
+                            </div>
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        @*<button type="button" style="float:left;padding: 12px 50px;font-size: 28px;margin-left: 80px;" class="btn btn-danger btn-lg" data-dismiss="modal">Cancel</button>
+                        <button type="button" style="padding: 12px 50px;font-size: 28px;margin-right: 80px;" class="btn btn-success btn-lg " id="createBtn">Save</button>*@
+                        <button type="button"style="float:left;font-weight:normal;" class="btn btn-danger btn-lg" data-dismiss="modal">Cancel</button>
+                        <button type="button"style=" font-weight:normal;" class="btn btn-success btn-lg " id="createBtn">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="editFood" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header"style="background-color:#3b5998ba;">
+                        <h2 class="modal-title" style="color:white;" id="exampleModalLabel">Something wrong ??</h2>
+                        @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>*@
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <input type="hidden" id="fruitId" />
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="name" class="col-form-label">Name</label>
+                                <input type="text" class="form-control" id="nameE" />
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="calories" class="col-form-label">Calories</label>
+                                <input type="number" class="form-control" id="caloriesE" />
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="carbs" class="col-form-label">Carbs</label>
+                                <input type="number" class="form-control" id="carbsE" />
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="fat" class="col-form-label">Fat</label>
+                                <input type="number" class="form-control" id="fatE" />
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="protein" class="col-form-label">Protein</label>
+                                <input type="number" class="form-control" id="proteinE" />
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="typeE" class="col-form-label">Type</label>
+                                <select id="typeE" class="form-control">
+                                    <option value="Alcohol">Alcohol</option>
+                                    <option value="Meat">Meat</option>
+                                    <option value="Milk">Milk</option>
+                                    <option value="Pasta">Pasta</option>
+                                    <option value="Sweet">Sweet</option>
+                                    <option value="Fruit">Fruit</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="display:flex; flex-direction:column; align-items:center">
+                                <label for="portionE" class="col-form-label">Serving Portion:</label>
+                                <input type="text" class="form-control" id="portionE" />
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" style="float:left; font-weight:normal;" class="btn btn-danger btn-lg" data-dismiss="modal">Cancel</button>
+                        <button type="button"style=" font-weight:normal;" class="btn btn-success btn-lg " id="createBtn">Save</button>
+                        @*<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" id="updateBtnE">Update</button>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div>
+            <table class="table table-hover visible-sm visible-md  visible-lg visible-xl">
+                <thead>
+                    <tr id="titles">
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Calories)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Carbs)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Fat)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Protein)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Portion)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="lg">
+                </tbody>
+            </table>
+
+        </div>
+        <div style="display:flex; flex-direction:column ; align-items:center">
+            <table class="table table-hover  visible-xs " style="max-width:300px; margin:0 25vw">
+                <thead>
+                    <tr id="titles">
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Calories)
+                        </th>
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.Carbs)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Fat)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Protein)
+                    </th>*@
+                        <th>
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        @*<th>
+                        @Html.DisplayNameFor(model => model.Portion)
+                    </th>*@
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody id="xs">
+                </tbody>
+            </table>
+        </div>
+
+@section scripts {
+    <script type="text/javascript" src="~/paging/jquery-simple-pagination-plugin.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            let counter2 = 0;
+            let xxx = 0;
+            let maxxx = 0;
+             $.ajax({
+                    dataType: 'json',
+                    type: 'get',
+                    url: '/api/fruitapi',
+                    success: function (data) {
+                        data.forEach(function (food) { counter2++ })
+                        //max selida
+                         maxxx = parseInt(counter2 / $('#numberPages').val());
+                        // poses fores xwraei to 5 sto count2
+                        xxx = parseInt(counter2 / 5);
+                        $('#numberPages').val(xxx*5);
+                        $('#numberPages').attr('max', counter2);
+
+                       
+                        console.log(maxxx);
+                         $('#goToPage').attr('max', counter2 / $('#numberPages').val());
+                    },
+                    error: function (error) {
+
+                 }
+                    
+                });
+
+            $('#numberPages').focus(function () {
+                $('#numberPages').attr('style', 'max-width:110px; color:black;');
+
+               // $('#numberPages').val('');
+               
+                //$('#numberPages').removeAttr('style');
+            })
+            let whichPages = 1;
+            $('#paging').click(function () {
+                maxxx = parseInt(counter2 / $('#numberPages').val());
+
+                //ison me 13
+                console.log(xxx * 5);
+                
+                if ($('#numberPages').val() <= xxx*5 && $('#numberPages').val() >= 5 && $('#numberPages').val()/5<=parseInt($('#numberPages').val()/5)) {
+
+                    $('#goToPage').attr('max', counter2 / $('#numberPages').val());
+                    if ($('#search').val() != '' && $('select').val() == '') {
+                        listFoodSearch()
+                    }
+                    else if ($('#search').val() != '' && $('select').val() != '') {
+                        listFoodFilterSearch();
+                    }
+                    else if ($('#search').val() == '' && $('select').val() != '') {
+                        listFoodFilter()
+                    }
+                    else
+                        listFood();
+                }
+                else if ($('#numberPages').val() > xxx*5) {
+                    $('#numberPages').html(xxx * 5);
+                    $('#numberPages').val(xxx * 5);
+                }
+                                    else if ($('#numberPages').val() < 5) {
+                     $('#numberPages').html(5);
+                    $('#numberPages').val(5);
+                }
+                else if (parseInt($('#numberPages').val() / 5) < $('#numberPages').val() / 5) {
+                    $('#numberPages').html(parseInt($('#numberPages').val()/5)*5);
+                    $('#numberPages').val(parseInt($('#numberPages').val()/5)*5);
+                    console.log(7 / 5);
+                }
+
+            });
+
+            $('#goToPage').focus(function () {
+                //$('#goToPage').removeAttr('style');
+            })
+
+            $('#goToPageBtn').click(function () {
+                whichPages = $('#goToPage').val();
+                console.log($('#goToPage').val());
+                console.log('edwwww');
+               maxxx = parseInt(counter2 / $('#numberPages').val());
+                console.log(maxxx);
+                if (whichPages <= maxxx + 1 && whichPages>0) {
+                    if ($('#search').val() != '' && $('select').val() == '') {
+                        listFoodSearch()
+                    }
+                    else if ($('#search').val() != '' && $('select').val() != '') {
+                        listFoodFilterSearch();
+                    }
+                    else if ($('#search').val() == '' && $('select').val() != '') {
+                        listFoodFilter()
+                    }
+                    else
+                        listFood();
+                }
+                else if (whichPages > maxxx+1 ) {
+                    $('#goToPage').html(maxxx + 1);
+                    $('#goToPage').val(maxxx + 1);
+                }
+                else {
+                    $('#goToPage').html(1);
+                      $('#goToPage').val( 1);
+                }
+            })
+
+            $('#pagingnext').click(function () {
+                if (whichPages < counter2 / $('#numberPages').val()) {
+                    whichPages++
+                    $('#goToPage').val(whichPages);
+
+                    if ($('#search').val() != '' && $('select').val() == '') {
+                        listFoodSearch()
+                    }
+                    else if ($('#search').val() != '' && $('select').val() != '') {
+                        listFoodFilterSearch();
+                    }
+                    else if ($('#search').val() == '' && $('select').val() != '') {
+                        listFoodFilter()
+                    }
+                    else
+                        listFood();
+                }
+                
+            });
+            $('#pagingprevious').click(function () {
+               
+                if (whichPages > 1) {
+                     whichPages--
+                    $('#goToPage').val(whichPages);
+
+                    if ($('#search').val() != '' && $('select').val() == '') {
+                        listFoodSearch()
+                    }
+                    else if ($('#search').val() != '' && $('select').val() != '') {
+                        listFoodFilterSearch();
+                    }
+                    else if ($('#search').val() == '' && $('select').val() != '') {
+                        listFoodFilter()
+                    }
+                    else
+                        listFood();
+
+                    console.log(whichPages);
+                }
+
+            });
+            function listFood() {
+                $.ajax({
+                    dataType: 'json',
+                    type: 'get',
+                    url: '/api/fruitapi',
+                    success: function (data) {
+                        $('tbody').empty();
+                        let counter = 0;
+                        let counter1 = 1;
+                        data.forEach(function (food) { counter++ })
+                        console.log(counter);
+
+                        var numberPages = $('#numberPages').val();
+                        console.log(numberPages);
+                        data.forEach(function (food) {
+                            if (whichPages == 1 && counter1 <= numberPages) {
+                                console.log('ok');
+                                $('#lg').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button style=" margin-top:5px;" class="btn btn-success updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                 $('#xs').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Type + '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button style=" margin-top:5px;" class="btn btn-success updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                            }
+                            else if (numberPages * (whichPages - 1) < counter1 && counter1 <= numberPages * whichPages && whichPages > 1) {
+                                console.log(counter1)
+                                console.log('edw');
+                                $('#lg').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button style=" margin-top:5px;" class="btn btn-success updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                 $('#xs').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Type + '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button style=" margin-top:5px;" class="btn btn-success updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+
+                            }
+                            counter1++
+                        });
+
+                        $('.deleteBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            var title = e.target.getAttribute('data-name');
+
+                            $.ajax({
+                                type: 'delete',
+                                url: '/api/fruitapi/' + id,
+                                success: function () {
+                                    alert('Delete food  ' + title);
+                                    listFood();
+                                    console.log('ccc');
+                                },
+                                error: function () {
+                                    //
+                                }
+                            });
+                        });
+
+                        $('.updateBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            $.ajax({
+                                url: '/api/fruitapi/' + id,
+                                type: 'get',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $('#fruitId').val(data.FruitId);
+                                    $('#nameE').val(data.Name);
+                                    $('#caloriesE').val(data.Calories);
+                                    $('#carbsE').val(data.Carbs);
+                                    $('#proteinE').val(data.Protein);
+                                    $('#fatE').val(data.Fat);
+                                    $('#typeE').val(data.Type);
+                                    $('#portionE').val(data.Portion);
+                                    console.log($('#typeE').val())
+
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+
+                            $('#editFood').modal('show');
+                        });
+
+                        $('#updateBtnE').click(function () {
+                            var m = new Object();
+                            m.FruitId = $('#fruitId').val();
+                            m.Name = $('#nameE').val();
+                            m.Calories = $('#caloriesE').val();
+                            m.Carbs = $('#carbsE').val();
+                            m.Fat = $('#fatE').val();
+                            m.Protein = $('#proteinE').val();
+                            m.Type = $('#typeE').val();
+                            m.Portion = $('#portionE').val();
+                            $.ajax({
+                                type: 'patch',
+                                url: '/api/fruitapi',
+                                data: m,
+                                success: function () {
+                                    listFood();
+                                    $('#editFood').modal('hide');
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                      alert('Wrong Input Data');
+                                }
+                            });
+                        });
+
+
+                    },
+                    error: function (error) {
+
+                    }
+                });
+            }
+            listFood();
+
+            $('#createBtn').click(function (e) {
+                var fruit = new Object();
+                fruit.Name = $('#name').val();
+                fruit.Calories = $('#calories').val();
+                fruit.Carbs = $('#carbs').val();
+                fruit.Protein = $('#protein').val();
+                fruit.Fat = $('#fat').val();
+                fruit.Type = $('#type').val();
+                fruit.Portion = $('#portion').val();
+                $.ajax({
+                    url: '/api/fruitapi',
+                    type: 'post',
+                    data: fruit,
+                    success: function () {
+                        $('#name').val('');
+                        $('#calories').val('');
+                        $('#carbs').val('');
+                        $('#protein').val('');
+                        $('#fat').val('');
+                        $('#type').val('');
+                        $('#portion').val('');
+                        $('#createFood').modal('hide');
+                        listFood();
+                    },
+                    error: function (error) {
+                        console.log(error);
+                        alert('Wrong Input Data');
+                    }
+
+                });
+
+            });
+            function listFoodSearch() {
+                var searchString = $('#search').val();
+                var id = 0;
+                $.ajax({
+                    type: 'get',
+                    url: '/api/fruitapi/0/' + searchString,
+                    success: function (data) {
+                        console.log('yes')
+                        $('tbody').empty();
+                        let counter = 0;
+                        let counter1 = 1;
+                        data.forEach(function (food) { counter++ })
+                        console.log(counter);
+                        var numberPages = $('#numberPages').val();
+                        console.log(numberPages);
+                        data.forEach(function (food) {
+                            if (whichPages == 1 && counter1 <= numberPages) {
+                                $('#lg').append('<tr> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                $('#xs').append('<tr> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Type +  '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                            }
+                            else if (numberPages * (whichPages - 1) < counter1 && counter1 <= numberPages * whichPages && whichPages > 1) {
+                                console.log(counter1)
+                                console.log('edw');
+                                $('#lg').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                $('#xs').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories +  '</td> <td>' + food.Type + '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+
+
+                            }
+                            counter1++
+                        });
+
+                        $('.deleteBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            var title = e.target.getAttribute('data-name');
+
+                            $.ajax({
+                                type: 'delete',
+                                url: '/api/fruitapi/' + id,
+                                success: function () {
+                                    alert('Delete food  ' + title);
+                                    listFoodSearch();
+                                    console.log('ccc');
+                                },
+                                error: function () {
+                                    //
+                                }
+                            });
+                        });
+
+                        $('.updateBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            $.ajax({
+                                url: '/api/fruitapi/' + id,
+                                type: 'get',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $('#fruitId').val(data.FruitId);
+                                    $('#nameE').val(data.Name);
+                                    $('#caloriesE').val(data.Calories);
+                                    $('#carbsE').val(data.Carbs);
+                                    $('#proteinE').val(data.Protein);
+                                    $('#fatE').val(data.Fat);
+                                    $('#typeE').val(data.Type);
+                                    $('#portionE').val(data.Portion);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                  
+                                }
+                            });
+
+                            $('#editFood').modal('show');
+                        });
+
+                        $('#updateBtnE').click(function () {
+                            var m = new Object();
+                            m.FruitId = $('#fruitId').val();
+                            m.Name = $('#nameE').val();
+                            m.Calories = $('#caloriesE').val();
+                            m.Carbs = $('#carbsE').val();
+                            m.Fat = $('#fatE').val();
+                            m.Protein = $('#proteinE').val();
+                            m.Type = $('#typeE').val();
+                            m.Portion = $('#portionE').val();
+                            $.ajax({
+                                type: 'patch',
+                                url: '/api/fruitapi',
+                                data: m,
+                                success: function () {
+                                    $('tbody').empty();
+                                    listFoodSearch();
+                                    $('#editFood').modal('hide');
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                      alert('Wrong Input Data');
+                                }
+                            });
+                        });
+
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+            $('#searchBtn').click(function (e) {
+
+                if ($('#search').val() != '' && $('select').val() == '') {
+                    listFoodSearch()
+                }
+                else if ($('#search').val() != '' && $('select').val() != '') {
+                    listFoodFilterSearch();
+                }
+                else if ($('#search').val() == '' && $('select').val() != '') {
+                    listFoodFilter()
+                }
+                else
+                    listFood();
+            });
+
+            function listFoodFilterSearch() {
+                var searchString = $('#search').val();
+                var filterString = $('#filters').val();
+                console.log(filterString);
+                $.ajax({
+                    type: 'get',
+                    url: '/api/fruitapi/0/' + searchString + '/' + filterString + '/10',
+                    success: function (data) {
+                        $('tbody').empty();
+                        let counter = 0;
+                        let counter1 = 1;
+                        data.forEach(function (food) { counter++ })
+                        console.log(counter);
+                        var numberPages = $('#numberPages').val();
+                        console.log(numberPages);
+                        data.forEach(function (food) {
+                            if (whichPages == 1 && counter1 <= numberPages) {
+                                $('#lg').append('<tr> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+
+                                 $('#xs').append('<tr> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>'  + food.Type + '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                            }
+                            else if (numberPages * (whichPages - 1) < counter1 && counter1 <= numberPages * whichPages && whichPages > 1) {
+                                console.log('both');
+                                console.log('edw');
+                                $('#lg').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                     $('#xs').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Type +'</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+
+
+                            }
+                            counter1++
+                        });
+
+                        $('.deleteBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            var title = e.target.getAttribute('data-name');
+
+                            $.ajax({
+                                type: 'delete',
+                                url: '/api/fruitapi/' + id,
+                                success: function () {
+                                    alert('Delete food  ' + title);
+                                    listFoodSearch();
+                                    console.log('ccc');
+                                },
+                                error: function () {
+                                    //
+                                }
+                            });
+                        });
+
+                        $('.updateBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            $.ajax({
+                                url: '/api/fruitapi/' + id,
+                                type: 'get',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $('#fruitId').val(data.FruitId);
+                                    $('#nameE').val(data.Name);
+                                    $('#caloriesE').val(data.Calories);
+                                    $('#carbsE').val(data.Carbs);
+                                    $('#proteinE').val(data.Protein);
+                                    $('#fatE').val(data.Fat);
+                                    $('#typeE').val(data.Type);
+                                    $('#portionE').val(data.Portion);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+
+                            $('#editFood').modal('show');
+                        });
+
+                        $('#updateBtnE').click(function () {
+                            var m = new Object();
+                            m.FruitId = $('#fruitId').val();
+                            m.Name = $('#nameE').val();
+                            m.Calories = $('#caloriesE').val();
+                            m.Carbs = $('#carbsE').val();
+                            m.Fat = $('#fatE').val();
+                            m.Protein = $('#proteinE').val();
+                            m.Type = $('#typeE').val();
+                            m.Portion = $('#portionE').val();
+                            $.ajax({
+                                type: 'patch',
+                                url: '/api/fruitapi',
+                                data: m,
+                                success: function () {
+                                    $('tbody').empty();
+                                    listFoodSearch();
+                                    $('#editFood').modal('hide');
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                      alert('Wrong Input Data');
+                                }
+                            });
+                        });
+
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+
+            $('#resetBtn').click(function (e) {
+                $('#search').val('');
+                whichPages = 1;
+                if ($('#search').val() != '' && $('select').val() == '') {
+                    listFoodSearch()
+                }
+                else if ($('#search').val() != '' && $('select').val() != '') {
+                    listFoodFilterSearch();
+                }
+                else if ($('#search').val() == '' && $('select').val() != '') {
+                    listFoodFilter()
+                }
+                else
+                    listFood();
+
+            });
+            function listFoodFilter() {
+                var filterString = $('#filters').val();
+                console.log(filterString);
+                console.log('edwwwww')
+                var id = 0;
+                var searchString = 'k';
+                $.ajax({
+                    type: 'get',
+                    url: '/api/fruitapi/0/1/' + filterString,
+                    success: function (data) {
+                        $('tbody').empty();
+                        let counter = 0;
+                        let counter1 = 0;
+                        data.forEach(function (food) { counter++ })
+                        console.log(counter);
+                        var numberPages = $('#numberPages').val();
+                        console.log(numberPages);
+                        data.forEach(function (food) {
+                            if (whichPages == 1 && counter1 < numberPages) {
+                                console.log('ok');
+                                $('#lg').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                 $('#xs').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories +  '</td> <td>' + food.Type +'</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                            }
+                            else if (numberPages * (whichPages - 1) < counter1 && counter1 <= numberPages * whichPages && whichPages > 1) {
+                                console.log(counter1)
+                                console.log('edw');
+                                $('#lg').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Carbs + '</td> <td>' + food.Fat + '</td> <td>' + food.Protein + '</td> <td>' + food.Type + '</td> <td>' + food.Portion +
+                                    '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+                                $('#xs').append('<tr id="' + food.FruitId + '"> <td >' + food.Name + '</td> <td>' + food.Calories + '</td> <td>' + food.Type + '</td><td><button  class="btn btn-danger deleteBtn" data-id="' + food.FruitId + '" data-name="' + food.Name + '">Delete</button>' +
+                                    '<button class="btn btn-warning updateBtn" data-id="'
+                                    + food.FruitId + '">Update</button></td></tr>')
+
+                            }
+                            counter1++
+                        });
+
+                        $('.deleteBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            var title = e.target.getAttribute('data-name');
+
+                            $.ajax({
+                                type: 'delete',
+                                url: '/api/fruitapi/' + id,
+                                success: function () {
+                                    alert('Delete food  ' + title);
+                                    listFoodFilter();
+                                    console.log('ccc');
+                                },
+                                error: function () {
+                                    //
+                                }
+                            });
+                        });
+
+                        $('.updateBtn').click(function (e) {
+                            var id = $(e.target).data('id');
+                            $.ajax({
+                                url: '/api/fruitapi/' + id,
+                                type: 'get',
+                                dataType: 'json',
+                                success: function (data) {
+                                    $('#fruitId').val(data.FruitId);
+                                    $('#nameE').val(data.Name);
+                                    $('#caloriesE').val(data.Calories);
+                                    $('#carbsE').val(data.Carbs);
+                                    $('#proteinE').val(data.Protein);
+                                    $('#fatE').val(data.Fat);
+                                    $('#typeE').val(data.Type);
+                                    $('#portionE').val(data.Portion);
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                }
+                            });
+
+                            $('#editFood').modal('show');
+                        });
+
+                        $('#updateBtnE').click(function () {
+                            var m = new Object();
+                            m.FruitId = $('#fruitId').val();
+                            m.Name = $('#nameE').val();
+                            m.Calories = $('#caloriesE').val();
+                            m.Carbs = $('#carbsE').val();
+                            m.Fat = $('#fatE').val();
+                            m.Protein = $('#proteinE').val();
+                            m.Type = $('#typeE').val();
+                            m.Portion = $('#portionE').val();
+                            $.ajax({
+                                type: 'patch',
+                                url: '/api/fruitapi',
+                                data: m,
+                                success: function () {
+                                    listFoodFilter();
+                                    $('#editFood').modal('hide');
+                                },
+                                error: function (error) {
+                                    console.log(error);
+                                      alert('Wrong Input Data');
+                                }
+                            });
+                        });
+
+                    },
+                    error: function () {
+
+                    }
+                });
+            }
+
+            $('#filterBtn').click(function (e) {
+
+                if ($('#search').val() != '' && $('select').val() == '') {
+                    listFoodSearch()
+                }
+                else if ($('#search').val() != '' && $('select').val() != '') {
+                    listFoodFilterSearch();
+                }
+                else if ($('#search').val() == '' && $('select').val() != '') {
+                    listFoodFilter()
+                }
+                else
+                    listFood();
+            });
+
+            //$('#resetFilterBtn').click(function (e) {
+            //    $('#filter').val('');
+            //      if ($('#search').val() != '' && $('select').val()=='') {
+            //        listFoodSearch()
+            //}
+            //    else if ($('#search').val() != '' && $('select').val() != '') {
+            //        listFoodFilterSearch();
+            //}
+            //else if ($('#search').val() == '' && $('select').val()!='') {
+            //        listFoodFilter()
+            //}
+            //else
+            //listFood();
+
+            //});
+
+        });
+
+    </script>
+}

@@ -1,0 +1,58 @@
+﻿@using Microsoft.AspNet.Identity
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guilty Pleasures</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <script src="@Url.Content("~/Scripts/jquery-3.3.1.min.js")" type="text/javascript"></script>
+    @Styles.Render("~/Content/Style.css")
+    <link href="https://fonts.googleapis.com/css?family=Ultra&display=swap" rel="stylesheet">
+</head>
+
+<body style="padding-top:0px;">
+    <div id="likeNavbar">
+        <div class="dropdown visible-xs">
+            <button class="btn dropdown-toggle " style="width:9px; margin-left:-10px; margin-right:5px;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                [<span>&#x2192;</span>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <ul>
+                    <div> @Html.ActionLink("Home", "Index", "Home", new { @class = "dropdown-item" })</div>
+                   
+                    <a class = "dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                </ul>
+            </div>
+        </div>
+        <button class="hidden-xs" id="BreakfastLay">@Html.ActionLink("Home", "Index", "Home")</button>
+        <button>  <a id="modalBtn" href="#listChosen" data-toggle="modal" data-target="#listChosen">Chosen Breakfast</a></button>
+        <button><a id="modalBtnL" href="#listChosen" data-toggle="modal" data-target="#listChosen">Chosen Lunch</a></button>
+        <button> <a id="modalBtnD" href="#listChosen" data-toggle="modal" data-target="#listChosen">Chosen Dinner</a></button>
+        <button>  <a id="modalBtnS" href="#listChosen" data-toggle="modal" data-target="#listChosen"> Chosen Snacks</a></button>
+        <button class="hidden-xs">  <a id="modalBtnAll" href="#listChosen" data-toggle="modal" data-target="#listChosen">Chosen All</a></button>
+        <button>  <a id="modalBtnB" href="#listChosenB" data-toggle="modal" data-target="#listChosenB">Chosen Exercise</a></button>
+        <button class="hidden-xs" id="logOf">  @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })</button>
+        <button class="hidden-xs">  <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></button>
+
+    </div>
+    <div hidden>
+        @Html.Partial("_LoginPartial");
+    </div>
+
+    <div id="Box" class="container body-content">
+        
+        @RenderBody()
+        <br />
+        @*<footer>
+            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+        </footer>*@
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+    @RenderSection("scripts1", required: false)
+</body>
+</html>

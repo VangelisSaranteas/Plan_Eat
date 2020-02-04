@@ -1,0 +1,25 @@
+﻿
+@{
+    ViewBag.Title = "Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<br />
+<h2>Continue as Admin</h2>
+
+<div style="display:flex; justify-content:center; " class="btn-group">
+    <button class="btn btn-primary" style="width:150px; font-size:15px;"> @Html.ActionLink("Food", "Index", "Fruit")</button>
+    <button class="btn btn-primary" style="width:150px; font-size:15px;">
+        @Html.ActionLink("Exercise", "Index", "Burn")
+    </button>
+    <button class="btn btn-primary" style="width:150px; font-size:15px;">
+        @Html.ActionLink("Packages", "IndexAdmin", "Packages")
+    </button>
+</div>
+<br />
+<h3>Continue as User</h3>
+<div style="display:flex; justify-content:center">
+    <button class="btn btn-primary" style="width:150px; font-size:15px;">
+        @Html.ActionLink("My Menu", "About", "Home", new { asadmin = false }, null)
+    </button>
+    </div>
+
